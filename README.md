@@ -1,4 +1,4 @@
-Repósitoria destinado a uso junto ao [uol back](https://github.com/Pagaoo/uolbackend) como front end da api do desafio da uol.
+Repositorio destinado a uso junto ao [uol back](https://github.com/Pagaoo/uolbackend) como front end da api do desafio da uol.
 
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
