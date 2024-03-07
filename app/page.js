@@ -4,23 +4,28 @@ import { useState } from 'react';
 import { GetAllHeroes, CreateHero} from '@/app/api/requests'
 
 export default function Home() {
-  const [listHeroes, setListHeroes] = useState();
+  const [heroesList, setHeroesList] = useState();
 
   function Cadastrar(event){
     event.preventDefault(); // Prevent default form submission
     const formData = new FormData(event.target); // Create FormData object from form
     const hero = Object.fromEntries(formData.entries()); // Convert FormData to plain object
-    console.log('Form data:', hero); // Log form data
-
-    console.log(hero.nome);
     
     CreateHero(hero);
   }
 
   function GetHeroesList(){
     GetAllHeroes((callback)=>{
-      setListHeroes(callback)
+      setHeroesList(callback)
     })
+  }
+
+  const heroGroupToDisplay = (heroGroup) => {
+    const heroGroupMap = {
+      'VINGADORES': 'Vingadores',
+      'LIGA_DA_JUSTICA': 'Liga da Justiça'
+    };
+    return heroGroupMap[heroGroup] || heroGroup;
   }
 
   return (
@@ -30,7 +35,7 @@ export default function Home() {
           Listar Herois
         </button>
       </div>
-      <hr className='w-full border mt-4'></hr>
+      <hr className='w-full border mt-4'></hr>     
       <div>
         <form className='flex flex-col items-center justify-center' onSubmit={Cadastrar}>
           <input name="nome" placeholder='nome' className='border rounded-md border-black mt-4 ml-4 pl-2'></input>
@@ -50,11 +55,40 @@ export default function Home() {
         </form>
       </div>
 
-      {listHeroes && (
-        <div>
-          <p>{listHeroes[0].name}</p>
+      {heroesList && heroesList.length > 0 && (
+        <div className='mt-4 text-left'>
+          <h1 className='mb-4 font-bold'>Lista de Heróis</h1>
+          <table className='border-collapse w-full mt-4'>
+            <thead>
+              <tr className='border-b'>
+                <th className="p-2">Nome</th>
+                <th className="p-2">|</th>
+                <th className="p-2">Email</th>
+                <th className="p-2">|</th>
+                <th className="p-2">Telefone</th>
+                <th className="p-2">|</th>
+                <th className="p-2">Codinome</th>
+                <th className="p-2">|</th>
+                <th className="p-2">Grupo</th>
+              </tr>
+            </thead>
+            <tbody>
+              {heroesList.map((hero, index) => (
+                <tr key={index}>
+                  <td className='p-2'>{hero.name}</td>
+                  <td className='p-2'>|</td>
+                  <td className='p-2'>{hero.email}</td>
+                  <td className='p-2'>|</td>
+                  <td className='p-2'>{hero.phoneNumber}</td>
+                  <td className='p-2'>|</td>
+                  <td className='p-2'>{hero.codiname}</td>
+                  <td className='p-2'>|</td>
+                  <td className='p-2'>{heroGroupToDisplay(hero.heroGroup)}</td>
+              </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-
       )}
     </div>
   );
